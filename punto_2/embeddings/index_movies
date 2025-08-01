@@ -1,0 +1,37 @@
+import psycopg2
+import openai
+from utils.connector import get_embedding
+import pandas as pd
+
+connection=psycopg2.connect(
+    host='localhost',
+    user='postgres',
+    password='luisma129',
+    database='movies'
+)
+cur=connection.cursor()
+
+data=pd.read_csv('data/movies-dataset.csv')
+
+for row in data.iterrows():
+    text=f"{row['title']}: {row['plot']} - {row['image']}"
+    embedding=get_embedding(text)
+    cur.execute(
+        "INSERT INTO movies (title, plot, image, embedding) VALUES (%s, %s, %s, %s)",
+        (row['title'], row['plot'], row['image'], embedding)
+    )
+# cur.execute(
+# """
+# CREATE TABLE IF NOT EXISTS movies (
+#     id SERIAL PRIMARY KEY,
+#     title TEXT,
+#     plot TEXT,
+#     image TEXT,
+#     embedding VECTOR(1536)
+# );
+# """
+# )
+
+connection.commit()
+cur.close()
+connection.close()

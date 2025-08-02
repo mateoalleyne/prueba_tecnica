@@ -1,6 +1,5 @@
 from embedding import get_embedding
 import psycopg2
-import psycopg2.extras
 
 def query_similar_movies(question,top_k=3):
     embedding = get_embedding(question)

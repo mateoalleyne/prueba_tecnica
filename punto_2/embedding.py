@@ -1,6 +1,6 @@
 import openai
 
-openai.api_key='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'
+openai.api_key='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'
 
 def get_embedding(texto):
     res=openai.Embedding.create(
@@ -11,7 +11,7 @@ def get_embedding(texto):
 
 def gen_answer(contexto, pregunta):
     prompt=f'''
-Usa la siguiente información sobre películas de los años 80 para responder la pregunta.
+Usa la siguiente información sobre películas de los años 80 para responder la pregunta. Si te preguntan por la imagen responde con la ULR de wikimedia.
 
 Contexto:
 {contexto}

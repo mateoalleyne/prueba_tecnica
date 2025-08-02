@@ -7,7 +7,7 @@ app = FastAPI()
 @app.post("/ask")
 def ask_question(question):
     context_docs = query_similar_movies(question)
-    context_text = "\n".join([f"{r[0]}: {r[1]}" for r in context_docs])
+    context_text = "\n".join([f"{r[0]}: {r[1]} - {r[2]}" for r in context_docs])
     answer = gen_answer(context_text, question)
     return {"answer": answer}
 

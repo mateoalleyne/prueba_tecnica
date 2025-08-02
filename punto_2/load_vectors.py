@@ -14,7 +14,7 @@ cur=connection.cursor()
 data=pd.read_csv('movies-dataset.csv')
 
 
-def init_db(data=data):
+def init_db(cur=cur,data=data):
     cur.execute(
     """
     CREATE EXTENSION IF NOT EXISTS vector;
@@ -36,25 +36,16 @@ def init_db(data=data):
             (row['title'], row['plot'], row['image'], emb)
         )
 
-
 cur.execute("SELECT COUNT(1) FROM movies")
-size=cur.fetchall()
-print(size)
-
-try:
-    init_db() if size[0,0]==0 else None
+size=0
+try: 
+    size=cur.fetchall()[0][0]
 except:
     pass
+print(f'SIZE OF TABLE: {size}')
 
-# text=f"{data.iloc[0,0]} - {data.iloc[0,1]} : {data.iloc[0,2]}"
-# emb=get_embedding(text)
-# print(f'{text}\n{emb}')
+init_db() if size == 0 else None
 
-# )
-# cur.execute(
-#         """INSERT INTO movies (title, plot, image, embedding) VALUES (%s, %s, %s, %s)""",
-#         (data.iloc[0,0], data.iloc[0,1], data.iloc[0,2], emb)
-# )
 connection.commit()
 cur.close()
 connection.close()

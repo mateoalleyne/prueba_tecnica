@@ -1,5 +1,6 @@
 from embedding import get_embedding
 import psycopg2
+import os
 
 def query_similar_movies(question,top_k=3):
     embedding = get_embedding(question)
@@ -9,7 +10,7 @@ def query_similar_movies(question,top_k=3):
         host='movies.cqf44we820b0.us-east-1.rds.amazonaws.com',
         port=5432,
         user='postgres',
-        password='c0ntr453n4',
+        password=os.getenv("OPENAI_API_KEY"),
         database='postgres'
     )
     cur=connection.cursor()

@@ -1,6 +1,7 @@
 import psycopg2
 from embedding import get_embedding
 import pandas as pd
+import os
 
 connection=psycopg2.connect(
     # host='localhost',
@@ -8,7 +9,7 @@ connection=psycopg2.connect(
     port=5432,
     user='postgres',
     password='c0ntr453n4',
-    database='postgres'
+    database=os.getenv("DB_PASSWORD")
 )
 cur=connection.cursor()
 data=pd.read_csv('movies-dataset.csv')

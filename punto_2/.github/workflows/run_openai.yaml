@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
 
 - name: Ejecutar archivo por lotes
-      run: \run.bat
+      run: run.bat
       shell: cmd
       env:
         OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}

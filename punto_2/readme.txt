@@ -9,7 +9,8 @@ Desarrollo de Prueba técnica para Líder de Línea de Conocimiento de IA.
 
 EJECUCIÓN:
 1. Para instalar dependencias necesarias, ejecute el archivo por lotes "run.bat"
-2. Para ejecutar el programa, ejecute el archivo por lotes "setup.bat"
+2. En el archivo .env ingrese el api key y la contraseña para la BD que se le va a enviar por correo.
+3. Para ejecutar el programa, ejecute el archivo por lotes "setup.bat"
 
 PREGUNTAS:
 Las preguntas de ejemplo de la implementación RAG se responden en la UI propia de la implementación según el input del usuario.

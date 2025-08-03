@@ -1,7 +1,6 @@
 import openai
-import os
 
-openai.api_key=os.getenv("OPENAI_API_KEY")
+openai.api_key="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"
 
 def get_embedding(texto):
     res=openai.Embedding.create(

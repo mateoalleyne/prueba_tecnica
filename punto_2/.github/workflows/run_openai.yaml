@@ -13,3 +13,4 @@ jobs:
       shell: cmd
       env:
         OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+	DB_PASSWORD: ${{ secrets.OPENAI_DB_PASSWORD }}

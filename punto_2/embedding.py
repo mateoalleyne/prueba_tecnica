@@ -5,7 +5,7 @@ openai.api_key="sk-proj-DjUxik2Al1FXd6w8f8KREM23NFuCR_miBWX46QlT_vhf2MpV-l7lmiZX
 def get_embedding(texto):
     res=openai.Embedding.create(
         input=texto,
-        model='text-embedding-3-small'
+        model='text-embedding-3-small',
     )
     return res['data'][0]['embedding']
 

@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Request
 from vector_store import query_similar_movies
 from embedding import gen_answer
-import streamlit as st
+import streamlit as st 
 app = FastAPI()
 
 @app.post("/ask")

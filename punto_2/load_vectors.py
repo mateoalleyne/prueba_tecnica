@@ -1,13 +1,17 @@
 import psycopg2
 from embedding import get_embedding
 import pandas as pd
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 connection=psycopg2.connect(
     # host='localhost',
     host='movies.cqf44we820b0.us-east-1.rds.amazonaws.com',
     port=5432,
     user='postgres',
-    password='c0ntr453n4',
+    password=os.getenv('BD_PASSWORD'),
     database='postgres'
 )
 cur=connection.cursor()

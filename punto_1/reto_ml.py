@@ -7,8 +7,10 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OrdinalEncoder
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.ensemble import RandomForestRegressor
-from sklearn.linear_model import BayesianRidge
+from sklearn.linear_model import LinearRegression
+from sklearn.neural_network import MLPRegressor
 from sklearn.model_selection import GridSearchCV
+from sklearn.svm import SVR
 
 
 
@@ -55,66 +57,64 @@ print(f'Datos luego de limpieza de datos:\n{data.head()}')
 print(f'Cantidad de datos válidos en cada columna: \n{data.count()}')
 
 #---------------VISUALIZACIÓN DE LOS DATOS--------------------------
-def show_graphs():
-    Y=data['Annual Turnover']
-    X1=data['Facebook Popularity Quotient']
-    X2=data['Instagram Popularity Quotient']
-    X3=data['Resturant Tier']
-    X4=data['Restaurant City Tier']
-    X5=data['Restaurant Zomato Rating']
-    X6=data['Comfortablility']
-    X7=data['Ambience']
-    X8=data['Lively']
-    X9=data['Food Rating']
-    X10=data['Overall Restaurant Rating']
-    X11=data['Value for Money']
-    X12=data['Privacy']
+Y=data['Annual Turnover']
+X1=data['Facebook Popularity Quotient']
+X2=data['Instagram Popularity Quotient']
+X3=data['Resturant Tier']
+X4=data['Restaurant City Tier']
+X5=data['Restaurant Zomato Rating']
+X6=data['Comfortablility']
+X7=data['Ambience']
+X8=data['Lively']
+X9=data['Food Rating']
+X10=data['Overall Restaurant Rating']
+X11=data['Value for Money']
+X12=data['Privacy']
 
-    figure, axis = plt.subplots(2, 2)
+figure, axis = plt.subplots(2, 2)
 
-    axis[0,0].scatter(X1,Y,c='blue',label='Facebook',s=2)
-    axis[0,0].scatter(X2,Y,c='red',label='Instagram',s=2)
-    axis[0,0].set_xlabel('Facebook/Instagram Popularity Quotient')
-    axis[0,0].set_ylabel('Annual Turnover')
-    axis[0,0].legend()
+axis[0,0].scatter(X1,Y,c='blue',label='Facebook',s=2)
+axis[0,0].scatter(X2,Y,c='red',label='Instagram',s=2)
+axis[0,0].set_xlabel('Facebook/Instagram Popularity Quotient')
+axis[0,0].set_ylabel('Annual Turnover')
+axis[0,0].legend()
 
-    axis[0,1].scatter(X3,Y,c='green',label='Restarurant',s=2)
-    axis[0,1].scatter(X4,Y,c='orange',label='Restarurant City',s=2)
-    axis[0,1].set_xlabel('Tiers')
-    axis[0,1].set_ylabel('Annual Turnover')
-    axis[0,1].legend()
+axis[0,1].scatter(X3,Y,c='green',label='Restarurant',s=2)
+axis[0,1].scatter(X4,Y,c='orange',label='Restarurant City',s=2)
+axis[0,1].set_xlabel('Tiers')
+axis[0,1].set_ylabel('Annual Turnover')
+axis[0,1].legend()
 
-    axis[1,0].scatter(X5,Y,c='blue',label='Zomato',s=2)
-    axis[1,0].scatter(X11,Y,c='orange',label='Value for Money',s=2)
-    axis[1,0].scatter(X9,Y,c='gray',label='Food',s=2)
-    axis[1,0].scatter(X10,Y,c='red',label='Overall',s=2)
-    axis[1,0].set_xlabel('Ratings')
-    axis[1,0].set_ylabel('Annual Turnover')
-    axis[1,0].legend()
-    
-    axis[1,1].scatter(X6,Y,c='black',label='Comfortablility',s=2)
-    axis[1,1].scatter(X7,Y,c='yellow',label='Ambience',s=2)
-    axis[1,1].scatter(X8,Y,c='gray',label='Lively',s=2)
-    axis[1,1].scatter(X12,Y,c='brown',label='Privacy',s=2)
-    axis[1,1].set_xlabel('Attributes')
-    axis[1,1].set_ylabel('Annual Turnover')
-    axis[1,1].legend()
-    plt.show()
+axis[1,0].scatter(X5,Y,c='blue',label='Zomato',s=2)
+axis[1,0].scatter(X11,Y,c='orange',label='Value for Money',s=2)
+axis[1,0].scatter(X9,Y,c='gray',label='Food',s=2)
+axis[1,0].scatter(X10,Y,c='red',label='Overall',s=2)
+axis[1,0].set_xlabel('Ratings')
+axis[1,0].set_ylabel('Annual Turnover')
+axis[1,0].legend()
 
-    plt.figure(figsize=(10,5))
-    cols_exclude=['Fire Audit',
-       'Liquor License Obtained', 'Situated in a Multi Complex',
-       'Dedicated Parking', 'Open Sitting Available', 'Resturant Tier']
-    c= data.select_dtypes(include=['number']).drop(columns=cols_exclude).corr()
-    sns.heatmap(c,cmap="BrBG",annot=True)
-    plt.title('Mapa de Calor (Correlación)')
-    plt.show()
+axis[1,1].scatter(X6,Y,c='black',label='Comfortablility',s=2)
+axis[1,1].scatter(X7,Y,c='yellow',label='Ambience',s=2)
+axis[1,1].scatter(X8,Y,c='gray',label='Lively',s=2)
+axis[1,1].scatter(X12,Y,c='brown',label='Privacy',s=2)
+axis[1,1].set_xlabel('Attributes')
+axis[1,1].set_ylabel('Annual Turnover')
+axis[1,1].legend()
+plt.show()
 
-    data.groupby('City')['Annual Turnover'].mean().nlargest(20).plot(kind='bar')
-    plt.title('Avg. Annual Turnover ($) in top 20 cities by avg. annual turnover')
-    plt.show()
+plt.figure(figsize=(10,5))
+cols_exclude=['Fire Audit',
+    'Liquor License Obtained', 'Situated in a Multi Complex',
+    'Dedicated Parking', 'Open Sitting Available', 'Resturant Tier']
+c= data.select_dtypes(include=['number']).drop(columns=cols_exclude).corr()
+sns.heatmap(c,cmap="BrBG",annot=True)
+plt.title('Mapa de Calor (Correlación)')
+plt.show()
 
-show_graphs()
+data.groupby('City')['Annual Turnover'].mean().nlargest(20).plot(kind='bar')
+plt.title('Avg. Annual Turnover ($) in top 20 cities by avg. annual turnover')
+plt.show()
+
 
 #-----------------------ENTRENAMIENTO DE MODELOS DE ML-------------------------------------------
 #Para la validación del performance del modelo voy a utilizar el Error Medio Absoluto (MAE)
@@ -162,13 +162,22 @@ label_X_valid[ok_label_cols] = ordinal_encoder.transform(X_valid[ok_label_cols])
 #Definición de Modelos:
 modelo_1=DecisionTreeRegressor(max_leaf_nodes=50,random_state=0)
 modelo_2=RandomForestRegressor(n_estimators=100,random_state=0,criterion='absolute_error')
-modelo_3=BayesianRidge()
+modelo_3=LinearRegression()
+modelo_4= MLPRegressor(
+    hidden_layer_sizes=(100, 50),  # Dos capas ocultas con 100 y 50 neuronas
+    activation='relu',             # Función de activación: 'identity', 'logistic', 'tanh', 'relu'
+    solver='adam',                 # Optimizador: 'lbfgs', 'sgd', 'adam'
+    max_iter=1000,
+    random_state=42
+)
 
 print(f'MAE para primer Modelo (Tree Regressor): {get_mae(modelo_1,label_X_train, label_X_valid, y_train, y_valid)}')
 print(f'MAE para segundo Modelo (Forest Regressor): {get_mae(modelo_2,label_X_train, label_X_valid, y_train, y_valid)}')
-print(f'MAE para tercer Modelo (Bayesian Ridge): {get_mae(modelo_3,label_X_train, label_X_valid, y_train, y_valid)}')
+print(f'MAE para tercer Modelo (Linear Regressor): {get_mae(modelo_3,label_X_train, label_X_valid, y_train, y_valid)}')
+print(f'MAE para cuarto Modelo (Red Neuronal): {get_mae(modelo_4,label_X_train, label_X_valid, y_train, y_valid)}')
 
-#El modelo con el mejor performance es el Random Forest Regressor, vamos a hacer un tuneo de hiperparámetros para ese modelo para refinarlo un poco más
+
+#El modelo con el mejor perfomance es el de Regresión Lineal, vamos a aplicar HyperParameter Tuning al modelo Random Forest Regressor para refinarlo un poco más.
 print('Haciendo hyperparameter tuning al modelo con el mejor score...')
 param_grid = {
     'n_estimators': [50, 100, 150, 200, 250],
@@ -180,7 +189,7 @@ grid_search.fit(label_X_train, y_train)
 print(grid_search.best_params_)
 print(grid_search.best_score_)
 
-#Los parámetros que obtuvieron el mejor score fueron {'max_depth': 10, 'min_samples_split': 5, 'n_estimators': 250}
+#Los parámetros que obtuvieron el mejor score fueron {'max_depth': 10, 'min_samples_split': 5, 'n_estimators': 300}
 print('--------PREDICIENDO ANNUAL TURNOVER PARA LOS SIGUIENTES 5 ESTABLECIMIENTOS CON MEJOR MODELO----------------')
 print(X_valid.head())
 print("--------------------LAS PREDICCIONES SON-----------------------")
